@@ -17,8 +17,7 @@
   justify-content: center;
 
   height: 42px;
-  padding: 0 22px 0 28px;   /* left a bit bigger */
-  border-radius: 12px;
+  padding: 0 22px 0 28px;   /* left a bit bigger */ border-radius: 12px;
 
   background: #13111185;
   color: #ffffffc9;
@@ -51,8 +50,7 @@
     border-right: 13px solid #e7e7e7;
   }
 }
-  /* Keep your page style — only improve form alignment + ID upload cards + shimmer */
-  .wrap{ align-items:flex-start; }
+  /* Keep your page style — only improve form alignment + ID upload cards + shimmer */ .wrap{ align-items:flex-start; }
 
   .page{
     width: min(520px, 94vw);
@@ -74,8 +72,7 @@
     resize:none;
   }
 
-  /* Card (same vibe) + "ភ្លែតៗ" shimmer */
-  .cardx{
+  /* Card (same vibe) + "" shimmer */ .cardx{
     position: relative;
     background: rgba(9, 10, 10, 0.856);
     border-radius: 18px;
@@ -101,19 +98,19 @@
 
 /* Signature card span 2 columns (be big) */
 #sigBox{
-  grid-column: 1 / span 2;   /* ឲធំស្មើ 2 ប្រអប់ */
+  grid-column: 1 / span 2;   /* 2 */
   height: auto;
   padding: 14px;
 }
 
 /* Make canvas taller on PC */
 #sigBox .sig-canvas{
-  height: 260px;             /* អ្នកអាចប្ដូរ 240-320 តាមចិត្ត */
+  height: 260px;             /* 240-320 */
 }
 
 /* Put clear button under the signature box (full row) */
 .sig-clear-wrap{
-  grid-column: 1 / span 2;   /* ឲនៅក្រោម sigBox (ជួរថ្មី) */
+  grid-column: 1 / span 2;   /* sigBox () */
   justify-content: flex-end;
   margin-top: 10px;
 }
@@ -121,8 +118,7 @@
 
   .field{ margin-bottom: 12px; }
 
-  /* Make all textarea shorter */
- /* ONLY make text inputs same height */
+  /* Make all textarea shorter */ /* ONLY make text inputs same height */
 input[type="text"],
 input[type="number"],
 input[type="tel"],
@@ -137,27 +133,21 @@ textarea{
   box-sizing:border-box;
 }
 
-
-  /* ===== ID upload cards (3 boxes) ===== */
-  /* 4 in 1 row */
-/* ✅ REPLACE your current .id-grid + responsive rules WITH THIS */
-
-/* 3 cards per row on PC + centered */
+  /* ===== ID upload cards (3 boxes) ===== */ /* 4 in 1 row */
+/* ✅ REPLACE your current .id-grid + responsive rules WITH THIS */ /* 3 cards per row on PC + centered */
 .id-grid{
   display:grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 18px;
   align-items: stretch;
 
-  /* make the 3 cards area wider + push a bit to the right */
-  width: min(900px, 96%);
+  /* make the 3 cards area wider + push a bit to the right */ width: min(900px, 96%);
   margin: 0 0 0 auto;   /* pushes to the right */
 }
 
 /* make each card bigger */
 .idbox{
-  height: 280px;         /* was 240 */
-  padding: 14px;
+  height: 280px;         /* was 240 */ padding: 14px;
   border-radius: 18px;
 }
 
@@ -194,8 +184,7 @@ textarea{
     border: 1px solid rgba(255,255,255,.20);
     background: rgba(0,0,0,.18);
     padding: 10px;
-    height: 240px;   /* size like your red box */
-    display:flex;
+    height: 240px;   /* size like your red box */ display:flex;
     flex-direction:column;
     align-items:center;
     justify-content:center;
@@ -221,10 +210,8 @@ textarea{
 #sigBox .sig-canvas{ position:relative; z-index:2; }
 #sigBox img#sigPreviewImg{ background: rgba(0,0,0,.22); }
 
-/* Clear button floating (mobile safe) */
-
-#sigBox{
-  height: 240px;              /* ទំហំដូច card upload ផ្សេងៗ */
+/* Clear button floating (mobile safe) */ #sigBox{
+  height: 240px;              /* card upload */
   padding: 12px;
   justify-content: flex-start !important;
   align-items: stretch !important;
@@ -285,8 +272,7 @@ textarea{
   opacity: .85;
 }
 
-  /* ===== Apply loan summary ===== */
-  .summary{
+  /* ===== Apply loan summary ===== */ .summary{
     margin-top: 10px;
     border-top: 1px solid rgba(255,255,255,.14);
     padding-top: 10px;
@@ -316,12 +302,12 @@ textarea{
 }
 .term-grid{
   display:grid;
-  grid-template-columns:repeat(4,1fr);
-  gap:10px;
+  grid-template-columns:repeat(5,1fr);
+  gap:8px;
   margin-top:10px;
 }
 @media(max-width:520px){
-  .term-grid{ grid-template-columns:repeat(2,1fr); }
+  .term-grid{ grid-template-columns:repeat(3,1fr); }
 }
 .term-btn{
   padding:12px 0;
@@ -628,8 +614,7 @@ textarea{
 
         <div class="id-grid">
 
-          <!-- FRONT -->
-          <label class="idbox {% if loan and loan.id_front %}has-img{% endif %}" id="boxFront">
+          <!-- FRONT --> <label class="idbox {% if loan and loan.id_front %}has-img{% endif %}" id="boxFront">
             <img class="id-preview" id="prevFront"
                  {% if loan and loan.id_front %}src="{{ loan.id_front.url }}"{% endif %}
                  alt="ID Front preview">
@@ -638,15 +623,13 @@ textarea{
                  src="{% static 'img/id_front.webp' %}"
                  alt="ID Front guide">
         
-            <input type="file" name="id_front" accept="image/*"
-                   {% if not locked %}required{% endif %}
+            <input type="file" name="id_front" accept="image/*" {% if not locked %}required{% endif %}
                    {% if locked %}disabled{% endif %}
                    hidden>
           </label>
         
         
-          <!-- BACK -->
-          <label class="idbox {% if loan and loan.id_back %}has-img{% endif %}" id="boxBack">
+          <!-- BACK --> <label class="idbox {% if loan and loan.id_back %}has-img{% endif %}" id="boxBack">
             <img class="id-preview" id="prevBack"
                  {% if loan and loan.id_back %}src="{{ loan.id_back.url }}"{% endif %}
                  alt="ID Back preview">
@@ -655,15 +638,13 @@ textarea{
                  src="{% static 'img/id_back.webp' %}"
                  alt="ID Back guide">
         
-            <input type="file" name="id_back" accept="image/*"
-                   {% if not locked %}required{% endif %}
+            <input type="file" name="id_back" accept="image/*" {% if not locked %}required{% endif %}
                    {% if locked %}disabled{% endif %}
                    hidden>
           </label>
         
         
-          <!-- SELFIE -->
-          <label class="idbox {% if loan and loan.selfie_with_id %}has-img{% endif %}" id="boxSelfie">
+          <!-- SELFIE --> <label class="idbox {% if loan and loan.selfie_with_id %}has-img{% endif %}" id="boxSelfie">
             <img class="id-preview" id="prevSelfie"
                  {% if loan and loan.selfie_with_id %}src="{{ loan.selfie_with_id.url }}"{% endif %}
                  alt="Selfie preview">
@@ -672,8 +653,7 @@ textarea{
                  src="{% static 'img/id_selfie.webp' %}"
                  alt="Selfie + ID guide">
         
-            <input type="file" name="selfie_with_id" accept="image/*"
-                   {% if not locked %}required{% endif %}
+            <input type="file" name="selfie_with_id" accept="image/*" {% if not locked %}required{% endif %}
                    {% if locked %}disabled{% endif %}
                    hidden>
           </label>
@@ -696,8 +676,7 @@ textarea{
   <img id="sigPreviewImg" style="display:none;">
 {% endif %}
 
-  <!-- save result here -->
-  <input type="hidden" name="signature_data" id="signatureData" value=""
+  <!-- save result here --> <input type="hidden" name="signature_data" id="signatureData" value=""
          {% if locked %}disabled{% endif %}>
 
 </div>
@@ -717,8 +696,8 @@ textarea{
       <div class="section-title" style="margin:0 0 10px;">Apply Loan</div>
 
       <div class="field">
-        <label>Loan amount (Min ₱90,000 · Max ₱5,000,000)</label>
-        <input type="number" name="loan_amount" id="loanAmount" min="90000" max="5000000" placeholder="Enter amount (Min ₱90,000 - Max ₱5,000,000)" required>
+        <label>Loan amount (Min ₱40,000 · Max ₱2,000,000)</label>
+        <input type="number" name="loan_amount" id="loanAmount" min="40000" max="2000000" placeholder="Enter amount (Min ₱40,000 - Max ₱2,000,000)" required>
       </div>
 
       <div class="field">
@@ -727,10 +706,11 @@ textarea{
         <input type="hidden" name="loan_terms" id="loanTerms" required>
 
         <div class="term-grid">
+          <button type="button" class="term-btn" data-term="6">6</button>
           <button type="button" class="term-btn" data-term="12">12</button>
-          <button type="button" class="term-btn" data-term="18">18</button>
           <button type="button" class="term-btn" data-term="24">24</button>
-          <button type="button" class="term-btn" data-term="30">30</button>
+          <button type="button" class="term-btn" data-term="36">36</button>
+          <button type="button" class="term-btn" data-term="48">48</button>
         </div>
       
         <div class="muted" id="termHint" style="margin-top:8px;">Choose months</div>

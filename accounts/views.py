@@ -86,47 +86,19 @@ def login_view(request):
     return render(request, "login.html")
 
 
-# =====================================================
-# ✅ FIX 1: register_view — validate reference_number
-# =====================================================
 def register_view(request):
-    """
-    Register with:
-    - phone + password + confirm_password
-    - must accept agreement (agree_accepted=1)
-    - ✅ must enter correct Reference Number (matches SystemSetting in DB)
-    """
     if request.method == "POST":
         phone = (request.POST.get("phone") or "").strip()
         password = request.POST.get("password") or ""
         confirm_password = request.POST.get("confirm_password") or ""
-        agree_accepted = (request.POST.get("agree_accepted") or "0").strip()
-        reference_number = (request.POST.get("reference_number") or "").strip()  # ✅ NEW
 
         if not phone or not password or not confirm_password:
             messages.error(request, "Phone, password and confirm password are required.")
             return render(request, "register.html")
 
-        # ✅ must accept agreement first
-        if agree_accepted != "1":
-            messages.error(request, "Please read and accept the User Agreement before registering.")
-            return render(request, "register.html")
-
-        # ✅ password must match
         if password != confirm_password:
             messages.error(request, "Password and Confirm Password do not match.")
             return render(request, "register.html")
-
-        # ✅ NEW: Validate Reference Number against DB (SystemSetting)
-        if not reference_number:
-            messages.error(request, "Reference Number is required.")
-            return render(request, "register.html")
-
-        correct_ref = SystemSetting.get_reference_number()
-        if reference_number != correct_ref:
-            messages.error(request, "Invalid Reference Number.")
-            return render(request, "register.html")
-        # ✅ END reference validation
 
         if User.objects.filter(phone=phone).exists():
             messages.error(request, "This phone is already used.")
@@ -330,12 +302,36 @@ def staff_dashboard(request):
     h_this_month = scale_height(reg_this_month)
     h_last_month = scale_height(reg_last_month)
 
-    # ✅ FIX 3: Read reference from DB (SystemSetting) instead of cache
-    current_reference = SystemSetting.get_reference_number()
+    # Pending actions (always whole-DB, not filtered by the period buttons)
+    pending_loans_count = LoanApplication.objects.filter(
+        status__in=["PENDING", "REVIEW"]
+    ).count()
+    pending_withdrawals_count = WithdrawalRequest.objects.filter(
+        status=WithdrawalRequest.STATUS_WAITING
+    ).count()
+
+    # Today + this-month quick stats
+    from django.db.models import Sum
+    approved_loans_today = LoanApplication.objects.filter(
+        status="APPROVED",
+        approved_at__range=(today_start, today_end),
+    ).count()
+    disbursed_this_month = LoanApplication.objects.filter(
+        status="APPROVED",
+        approved_at__gte=month_start,
+    ).aggregate(total=Sum("amount"))["total"] or 0
+    paid_withdrawals_today = WithdrawalRequest.objects.filter(
+        status=WithdrawalRequest.STATUS_PAID,
+        updated_at__range=(today_start, today_end),
+    ).count()
 
     context = {
-        "current_reference": current_reference,
         "period": period,
+        "pending_loans_count": pending_loans_count,
+        "pending_withdrawals_count": pending_withdrawals_count,
+        "approved_loans_today": approved_loans_today,
+        "disbursed_this_month": disbursed_this_month,
+        "paid_withdrawals_today": paid_withdrawals_today,
         "total_users": total_users,
         "total_loans": total_loans,
         "total_withdrawals": total_withdrawals,

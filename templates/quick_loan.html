@@ -144,14 +144,14 @@ input[readonly] {
 /* ===== Term buttons grid ===== */
 .term-grid{
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 10px;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 8px;
   margin-top: 10px;
 }
 
 @media(max-width: 520px){
-  .term-grid { 
-    grid-template-columns: repeat(2, 1fr); 
+  .term-grid {
+    grid-template-columns: repeat(3, 1fr);
   }
   .page {
     padding: 16px 12px 40px;
@@ -488,13 +488,13 @@ input[readonly] {
     </div>
 
     <div class="field">
-      <label>Loan amount (Min ₱90,000 · Max ₱5,000,000)</label>
+      <label>Loan amount (Min ₱40,000 · Max ₱2,000,000)</label>
       <input
         type="number"
         id="qAmount"
-        min="90000"
-        max="5000000"
-        placeholder="Enter amount (Min ₱90,000 - Max ₱5,000,000)"
+        min="40000"
+        max="2000000"
+        placeholder="Enter amount (Min ₱40,000 - Max ₱2,000,000)"
         {% if loan %}readonly{% endif %}
       >
     </div>
@@ -504,10 +504,11 @@ input[readonly] {
       <input type="hidden" id="qTerm">
 
       <div class="term-grid">
+        <button type="button" class="term-btn" data-term="6" {% if loan %}disabled{% endif %}>6</button>
         <button type="button" class="term-btn" data-term="12" {% if loan %}disabled{% endif %}>12</button>
-        <button type="button" class="term-btn" data-term="18" {% if loan %}disabled{% endif %}>18</button>
         <button type="button" class="term-btn" data-term="24" {% if loan %}disabled{% endif %}>24</button>
-        <button type="button" class="term-btn" data-term="30" {% if loan %}disabled{% endif %}>30</button>
+        <button type="button" class="term-btn" data-term="36" {% if loan %}disabled{% endif %}>36</button>
+        <button type="button" class="term-btn" data-term="48" {% if loan %}disabled{% endif %}>48</button>
       </div>
 
       <div class="hint" id="qHint">Choose months</div>
@@ -588,15 +589,51 @@ input[readonly] {
     try { return Number(n).toLocaleString("en-US", {minimumFractionDigits:2, maximumFractionDigits:2}); } catch (e) { return String(n); }
   }
 
+  const MIN_AMOUNT = 40000;
+  const MAX_AMOUNT = 2000000;
+
+  let amountError = document.getElementById("qAmountError");
+  if (!amountError && amountEl) {
+    amountError = document.createElement("div");
+    amountError.id = "qAmountError";
+    amountError.style.cssText = "margin-top:6px;font-size:12px;font-weight:700;color:#dc2626;display:none;";
+    amountEl.insertAdjacentElement("afterend", amountError);
+  }
+
+  function setAmountError(msg){
+    if (!amountError) return;
+    if (msg){
+      amountError.textContent = msg;
+      amountError.style.display = "block";
+      if (amountEl) amountEl.style.borderColor = "#dc2626";
+    } else {
+      amountError.style.display = "none";
+      if (amountEl) amountEl.style.borderColor = "";
+    }
+  }
+
   function update(){
     const amount = Number(amountEl?.value || 0);
     const term = Number(termEl?.value || 0);
+    const hasAmount = amountEl && amountEl.value !== "";
+    const amountInRange = amount >= MIN_AMOUNT && amount <= MAX_AMOUNT;
 
     if (outAmount) outAmount.textContent = amount > 0 ? ("₱" + fmt(amount)) : "—";
     if (outTerm) outTerm.textContent = term > 0 ? (term + " months") : "—";
 
+    // Inline error: only show once user typed something out-of-range
+    if (hasAmount && !amountInRange){
+      if (amount < MIN_AMOUNT){
+        setAmountError("Minimum loan amount is ₱" + fmt(MIN_AMOUNT).replace(/\.00$/, ""));
+      } else {
+        setAmountError("Maximum loan amount is ₱" + fmt(MAX_AMOUNT).replace(/\.00$/, ""));
+      }
+    } else {
+      setAmountError("");
+    }
+
     const rate = 0.003; // 0.3% per month
-    if(amount > 0 && term > 0){
+    if(amountInRange && term > 0){
       const monthly = amount * rate * Math.pow(1 + rate, term) / (Math.pow(1 + rate, term) - 1);
       const total = monthly * term;
       if (outMonthly) outMonthly.textContent = "₱" + fmt(monthly);
@@ -653,9 +690,18 @@ input[readonly] {
     goBtn.style.opacity = ".55";
   {% else %}
     goBtn.addEventListener("click", ()=>{
-      const amount = amountEl?.value || "";
+      const amount = Number(amountEl?.value || 0);
       const term = termEl?.value || "";
       if(!amount || !term) return;
+      if(amount < MIN_AMOUNT || amount > MAX_AMOUNT){
+        setAmountError(
+          amount < MIN_AMOUNT
+            ? ("Minimum loan amount is ₱" + fmt(MIN_AMOUNT).replace(/\.00$/, ""))
+            : ("Maximum loan amount is ₱" + fmt(MAX_AMOUNT).replace(/\.00$/, ""))
+        );
+        amountEl?.focus();
+        return;
+      }
       window.location.href = "{% url 'loan_info' %}?amount=" + encodeURIComponent(amount) + "&term=" + encodeURIComponent(term);
     });
   {% endif %}

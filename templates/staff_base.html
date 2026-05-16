@@ -42,8 +42,7 @@ select option{
 body, body * {
   font-family: "Gridova", system-ui, sans-serif !important;
 }
-/* ===============================
-   MODALS
+/* =============================== MODALS
    =============================== */
 .logout-modal{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,.62);z-index:9999;padding:18px 14px;box-sizing:border-box}
 .logout-modal.show{display:flex}
@@ -107,8 +106,7 @@ body, body * {
   margin-top: 14px;
 }
 
-/* ===============================
-   FONT
+/* =============================== FONT
    =============================== */
 .user-font{
   font-family: "Ovelion", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif !important;
@@ -117,8 +115,7 @@ body, body * {
 }
 .u-link{ text-decoration:none; font-weight:800; display:inline-block; }
 
-/* ===============================
-   ANIMATIONS
+/* =============================== ANIMATIONS
    =============================== */
 @keyframes slideInRightToLeft {
   from { transform: translateX(70px); opacity: 0; }
@@ -136,9 +133,7 @@ body, body * {
 .card.card-anim{ animation: slideInRightToLeft 1200ms ease-out both; }
 .card.card-anim-left{ animation: slideInLeftToRight 1200ms ease-out both; }
 
-
-/* ===============================
-   THEME
+/* =============================== THEME
    =============================== */
 :root{
   --bg1:#061a10; --bg2:#02130a;
@@ -172,8 +167,7 @@ body{
   height: calc(100vh - 20px);
 }
 
-/* ===========================
-   TOPBAR_LIGHTNING_ANIMATION
+/* =========================== TOPBAR_LIGHTNING_ANIMATION
    =========================== */
 
    .topbar{
@@ -182,8 +176,7 @@ body{
   display:flex; align-items:center; justify-content:space-between;
   margin-bottom:16px;
 
-  /* ✅ CULTURE MIX (NO ANIMATION) */
-  background: linear-gradient(120deg, #c9a33aaf, #0B2B57 af);
+  /* ✅ CULTURE MIX (NO ANIMATION) */ background: linear-gradient(120deg, #c9a33aaf, #0B2B57 af);
 
   border:2px solid rgba(201,163,58,.65);
   box-shadow: 0 0 10px rgba(201,163,58,.18), 0 14px 10px rgba(0,0,0,.18);
@@ -275,8 +268,6 @@ body{
 .card.side .menu-item:hover{
   background: rgba(0,0,0,.30) !important;
 }
-
-
 
 .card.side::after{
   content:"";
@@ -412,8 +403,7 @@ body{
   flex: 1;
   min-height: 0;
   overflow-y: auto;
-  overflow-x: auto;     /* ✅ changed */
-  padding-bottom: 90px;
+  overflow-x: auto;     /* ✅ changed */ padding-bottom: 90px;
   scroll-padding-bottom: 90px;
 
   scrollbar-gutter: stable both-edges;
@@ -428,8 +418,7 @@ body{
 }
 /* ✅ Professional scrollbar spacing */
 .content{
-  scrollbar-gutter: stable both-edges; /* Chrome/Edge */
-  padding-right: 18px;                /* space for scrollbar */
+  scrollbar-gutter: stable both-edges; /* Chrome/Edge */ padding-right: 18px;                /* space for scrollbar */
 }
 .content{
   overscroll-behavior: contain;
@@ -557,8 +546,7 @@ input,select{
       flex: 0 0 auto;
       white-space: nowrap;
     }
-/* ===== Staff dashboard colorful cards (paste into staff_base.html <style> ) ===== */
-  /* ===== Staff dashboard layout (4 cards row) ===== */
+/* ===== Staff dashboard colorful cards (paste into staff_base.html <style> ) ===== */ /* ===== Staff dashboard layout (4 cards row) ===== */
 .stats-grid{
   display:grid;
   gap:14px;
@@ -579,8 +567,7 @@ input,select{
 .perf-wrap{
   margin-top:14px;
   display:grid;
-  grid-template-columns: 1fr 1fr;   /* 2 cards side-by-side */
-  gap:14px;
+  grid-template-columns: 1fr 1fr;   /* 2 cards side-by-side */ gap:14px;
   align-items: stretch;
 }
 
@@ -598,8 +585,7 @@ input,select{
   border-radius: 22px;
   padding: 16px;
 
-  /* paper / glass */
-  background: rgba(255,255,255,.12);
+  /* paper / glass */ background: rgba(255,255,255,.12);
   border: 1px solid rgba(255,255,255,.18);
   box-shadow:
     0 18px 50px rgba(0,0,0,.35),
@@ -789,21 +775,21 @@ input,select{
   display:flex;
   align-items:flex-end;
   justify-content:space-between;
-  gap: 18px;                 /* ✅ space រវាង bar */
+  gap: 18px;                 /* ✅ space bar */
   min-height: 300px;
 
-  padding: 10px 22px 60px;   /* ✅ បន្ថែម padding ស្ដាំ/ឆ្វេង + ខាងក្រោម */
+  padding: 10px 22px 60px;   /* ✅ padding / + */
   box-sizing: border-box;
 
   border-radius:18px;
   background: rgba(255,255,255,.06);
   border:1px solid rgba(255,255,255,.10);
 
-  overflow: hidden;          /* ✅ កុំឲ្យអ្វីលានក្រៅ card */
+  overflow: hidden;          /* ✅ card */
 }
 
 .bar{
-  width:28px;              /* ស្គម */
+  width:28px;              
   border-radius:12px;
   display:flex;
   align-items:flex-end;
@@ -815,10 +801,10 @@ input,select{
 }
 .bar span{
   position:absolute;
-  bottom: -32px;           /* ✅ ចុះក្រោមបន្តិច */
+  bottom: -32px;           
   left: 50%;
   transform: translateX(-50%);
-  font-size: 14px;         /* ✅ ធំឡើង (ប្រហែល +3px) */
+  font-size: 14px;         /* ✅ ( +3px) */
   font-weight: 900;
   opacity: .90;
   color:#eafff1;
@@ -913,9 +899,7 @@ input,select{
 .muted{
   color: rgba(255,255,255,.88);
 }
-/* ===== Neon White Glow Titles ===== */
-
-/* Topbar buttons */
+/* ===== Neon White Glow Titles ===== */ /* Topbar buttons */
 .topbar .btn{
   color:#ffffff !important;
   font-weight:800;
@@ -1006,7 +990,7 @@ input,select{
 }
 /* ===== User mini card (right side) ===== */
 .perf-wrap .user-mini-card{
-  grid-column: 3 / span 2;     /* ឲ្យទៅខាងស្តាំ 2 columns */
+  grid-column: 3 / span 2;     /* 2 columns */
   min-height: 360px;
   border-radius: 22px;
   border: 1px solid rgba(255,255,255,.12);
@@ -1016,7 +1000,7 @@ input,select{
 }
 
 @media (max-width:1100px){
-  .perf-wrap .user-mini-card{ grid-column: 1 / -1; } /* Tablet/mobile => xuốngក្រោម */
+  .perf-wrap .user-mini-card{ grid-column: 1 / -1; } /* Tablet/mobile => xuống */
 }
 
 .user-mini-head{
@@ -1072,13 +1056,13 @@ body.no-welcome-anim .card.card-anim-left{
   padding:10px 22px;
   min-height:42px;
 
-  border-radius:8px;              /* ⬅ មិនមូលទៀត */
+  border-radius:8px;              
   border:1px solid rgba(255,255,255,.18);
 
   background:rgba(255,255,255,.06);
   color:#fff;
 
-  font-size:14px;                  /* ⬅ ធំជាងមុន */
+  font-size:14px;                  
   font-weight:800;
   letter-spacing:.3px;
 
@@ -1099,9 +1083,7 @@ body.no-welcome-anim .card.card-anim-left{
 body, body *{
   font-family: 'Ovelion', sans-serif !important;
 }
-/* ===== Staff responsive fix (PHONE) ===== */
-
-/* allow page scroll on phone (important) */
+/* ===== Staff responsive fix (PHONE) ===== */ /* allow page scroll on phone (important) */
 body{
   overflow: auto !important;
   height: auto !important;
@@ -1126,22 +1108,17 @@ body{
 /* grid: stack menu + content on phone */
 @media (max-width: 900px){
   .grid{
-    grid-template-columns: 1fr !important;   /* 1 column */
-    height: auto !important;
+    grid-template-columns: 1fr !important;   /* 1 column */ height: auto !important;
   }
 
   .card{
-    height: auto !important;                /* don't force full height */
-    min-height: 0;
+    height: auto !important;                /* don't force full height */ min-height: 0;
   }
 
   .content{
-    padding-bottom: 40px;                   /* prevent bottom cut */
-    overflow: visible;                      /* allow normal flow */
-  }
+    padding-bottom: 40px;                   /* prevent bottom cut */ overflow: visible;                      /* allow normal flow */ }
 
-  /* table/forms avoid squeeze */
-  table{ table-layout: auto !important; }
+  /* table/forms avoid squeeze */ table{ table-layout: auto !important; }
   input, select, textarea{ width: 100% !important; }
 }
 
@@ -1185,14 +1162,12 @@ body{
 thead tr{ border-bottom: 1px solid rgba(255, 255, 255, 0.911); }
 th{ text-align:left; font-size:12px; letter-spacing:.06em; text-transform:uppercase; color:rgba(255,255,255,.90); }
 
-/* ===============================
-   STAFF TABLE HEADER BAR (ALL STAFF PAGES)
+/* =============================== STAFF TABLE HEADER BAR (ALL STAFF PAGES)
    =============================== */
 
 /* Only tables inside the RIGHT content card */
 .dashboard-card table thead th{
-  background: #004182;              /* culture / brand color */
-  color: #ffffff !important;
+  background: #004182;              /* culture / brand color */ color: #ffffff !important;
   font-weight: 900;
   letter-spacing: .06em;
   text-transform: uppercase;
@@ -1235,8 +1210,7 @@ th{ text-align:left; font-size:12px; letter-spacing:.06em; text-transform:upperc
   color: rgba(0, 65, 130, 0.75) !important;
   text-shadow: none !important;
 }
-/* ==================================================
-   ALL STAFF TABLE BODY TEXT -> BLUE (ALL PAGES)
+/* ================================================== ALL STAFF TABLE BODY TEXT -> BLUE (ALL PAGES)
    (Only rows data / tbody. Not the header row)
    ================================================== */
    :root{
@@ -1266,8 +1240,7 @@ th{ text-align:left; font-size:12px; letter-spacing:.06em; text-transform:upperc
 .dashboard-card table tbody td textarea{
   color: var(--staff-blue) !important;
 }
-/* =========================================
-   RIGHT BIG CARD -> CLEAN WHITE BACKGROUND
+/* ========================================= RIGHT BIG CARD -> CLEAN WHITE BACKGROUND
    (ALL STAFF PAGES)
    ========================================= */
    .dashboard-card{
@@ -1290,8 +1263,7 @@ th{ text-align:left; font-size:12px; letter-spacing:.06em; text-transform:upperc
   color: #ffffff !important;
 }
 
-/* =========================================================
-   STAFF TABLE: REMOVE BLACK BOX INPUTS + ADD VERTICAL LINES
+/* ========================================================= STAFF TABLE: REMOVE BLACK BOX INPUTS + ADD VERTICAL LINES
    (ALL STAFF PAGES inside .dashboard-card)
    ========================================================= */
 
@@ -1300,8 +1272,6 @@ th{ text-align:left; font-size:12px; letter-spacing:.06em; text-transform:upperc
   border-collapse: separate !important;
   border-spacing: 0 !important;
 }
-
-
 
 /* Remove line on first column */
 .dashboard-card table thead th:first-child,
@@ -1318,15 +1288,12 @@ th{ text-align:left; font-size:12px; letter-spacing:.06em; text-transform:upperc
 .dashboard-card table tbody td input,
 .dashboard-card table tbody td select,
 .dashboard-card table tbody td textarea{
-  background: transparent !important;   /* remove black box */
-  border: 0 !important;
-  border-bottom: 2px solid rgba(0,0,0,.45) !important; /* underline style */
-  border-radius: 0 !important;
+  background: transparent !important;   /* remove black box */ border: 0 !important;
+  border-bottom: 2px solid rgba(0,0,0,.45) !important; /* underline style */ border-radius: 0 !important;
   box-shadow: none !important;
 
   padding: 8px 6px !important;
-  color: #004182 !important;            /* keep your blue text */
-  font-weight: 800 !important;
+  color: #004182 !important;            /* keep your blue text */ font-weight: 800 !important;
   outline: none !important;
 }
 
@@ -1379,8 +1346,7 @@ th{ text-align:left; font-size:12px; letter-spacing:.06em; text-transform:upperc
     </div>
 
     <div class="grid">
-      <!-- LEFT MENU -->
-      <div class="card side card-anim-left">
+      <!-- LEFT MENU --> <div class="card side card-anim-left">
         <div class="card-h">
           <div class="h1">Menu</div>
           <span class="dot"></span>
@@ -1423,15 +1389,13 @@ th{ text-align:left; font-size:12px; letter-spacing:.06em; text-transform:upperc
         </a>
       </div>
 
-      <!-- RIGHT CONTENT -->
-      <div class="card card-anim dashboard-card">
+      <!-- RIGHT CONTENT --> <div class="card card-anim dashboard-card">
         {% block content %}{% endblock %}
       </div>
     </div>
   </div>
 
-  <!-- ✅ ONE Message Modal (shared for ALL staff pages) -->
-  <div id="msgModal" aria-hidden="true">
+  <!-- ✅ ONE Message Modal (shared for ALL staff pages) --> <div id="msgModal" aria-hidden="true">
     <div class="modal-box" role="dialog" aria-modal="true" aria-label="Edit Message">
       <h3 id="msgTitle">Edit message</h3>
       <textarea id="msgTextarea" placeholder="Type message here..."></textarea>
@@ -1442,8 +1406,7 @@ th{ text-align:left; font-size:12px; letter-spacing:.06em; text-transform:upperc
     </div>
   </div>
 
-  <!-- ✅ Staff Logout Confirm Modal -->
-  <div id="staffLogoutModal" class="logout-modal" aria-hidden="true">
+  <!-- ✅ Staff Logout Confirm Modal --> <div id="staffLogoutModal" class="logout-modal" aria-hidden="true">
     <div class="logout-box" role="dialog" aria-modal="true" aria-label="Confirm Logout">
       <div class="logout-title">Confirm Logout</div>
       <div class="logout-text">Are you sure you want to logout?</div>
@@ -1459,8 +1422,7 @@ th{ text-align:left; font-size:12px; letter-spacing:.06em; text-transform:upperc
     </div>
   </div>
 
-  <!-- ✅ Scripts MUST be inside body -->
-  <script>
+  <!-- ✅ Scripts MUST be inside body --> <script>
     // ============ Staff Logout Modal ============
     (function(){
       const btn = document.getElementById("staffLogoutBtn");

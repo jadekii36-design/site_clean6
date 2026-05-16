@@ -2,7 +2,6 @@
 {% block content %}
 {% load humanize %}
 
-
 <style>
 
 .modal-cancel{
@@ -129,13 +128,13 @@
 /* ✅ set widths (must use !important to win) */
 .dashboard-card #loanTable th:nth-child(1),
 .dashboard-card #loanTable td:nth-child(1){
-  width:40px !important;          /* ✅ ឲ្យស្គម */
+  width:40px !important;          
   min-width:40px !important;
   max-width:40px !important;
   text-align:center !important;
-  padding-left:6px !important;    /* ✅ កាត់ padding */
+  padding-left:6px !important;    /* ✅ padding */
   padding-right:6px !important;
-  font-size:12px !important;      /* ✅ optional ឲ្យស្គមស្អាត */
+  font-size:12px !important;      /* ✅ optional */
 }
 
 .dashboard-card #loanTable th:nth-child(2),
@@ -192,8 +191,7 @@
 }
 
 .dashboard-card #loanTable td.action-cell{
-  padding-right: 14px !important; /* ✅ leave space on the right */
-  box-sizing: border-box !important;
+  padding-right: 14px !important; /* ✅ leave space on the right */ box-sizing: border-box !important;
 }
 /* ✅ ACTIONS wrap */
 .dashboard-card #loanTable td.action-cell{
@@ -204,18 +202,13 @@
 /* ✅ ACTIONS = big buttons like green boxes */
 .dashboard-card .action-wrap{
   display:grid !important;
-  grid-template-columns: repeat(3, 1fr) !important; /* 3 buttons per row */
-  gap:10px !important;
+  grid-template-columns: repeat(3, 1fr) !important; /* 3 buttons per row */ gap:10px !important;
   align-items:stretch !important;
 }
 
 .dashboard-card .action-wrap button{
   width:100% !important;
-  height:32px !important;        /* 38 -> 33 (កាត់ 5px) */
-  padding:0 11px !important;     /* 12 -> 10 (កាត់បន្តិច) */
-  font-size:13px !important;     /* 13 -> 12 (កាត់បន្តិច) */
-  border-radius:11px !important; /* 12 -> 10 (កាត់បន្តិច) */
-  border:0 !important;
+  height:32px !important;        /* 38 -> 33 ( 5px) */ padding:0 11px !important;     /* 12 -> 10 () */ font-size:13px !important;     /* 13 -> 12 () */ border-radius:11px !important; /* 12 -> 10 () */ border:0 !important;
   color:#fff !important;
   font-weight:900 !important;
   cursor:pointer !important;
@@ -281,7 +274,7 @@
   color: #004182 !important;
 
   border: 0 !important;
-  border-bottom: 0 !important;     /* ✅ លុប underline */
+  border-bottom: 0 !important;     /* ✅ underline */
   border-radius: 14px !important;
 
   box-shadow: none !important;
@@ -290,8 +283,7 @@
   text-align: center !important;
   cursor: pointer !important;
 
-  appearance: none;                 /* optional: look cleaner */
-  -webkit-appearance: none;
+  appearance: none;                 /* optional: look cleaner */ -webkit-appearance: none;
 }
 
 /* Approved = Green */
@@ -312,7 +304,6 @@
   color: #ffffff !important;
 }
 
-
 /* ✅ Center text for NAME / PHONE / AMOUNT / TERM (columns 2-5) */
 .dashboard-card #loanTable th:nth-child(2),
 .dashboard-card #loanTable td:nth-child(2),
@@ -331,9 +322,7 @@
   text-align: center !important;
 }
 
-/* ===== FIX BY COLUMN CLASS (STABLE) ===== */
-
-/* widths + center */
+/* ===== FIX BY COLUMN CLASS (STABLE) ===== */ /* widths + center */
 .dashboard-card #loanTable th.col-id,
 .dashboard-card #loanTable td.col-id{
   width:40px !important;
@@ -356,11 +345,10 @@
 
 .dashboard-card #loanTable th.col-amount,
 .dashboard-card #loanTable td.col-amount{
-  width:110px !important;     /* តូចជាងមុន */
+  width:110px !important;     
   min-width:110px !important;
   max-width:110px !important;
-  text-align:center !important; /* ✅ amount center */
-  font-size:14px !important;    /* ✅ ស្មើ phone */
+  text-align:center !important; /* ✅ amount center */ font-size:14px !important;    /* ✅ phone */
   font-weight:900 !important;
   color:#0b2b55 !important;
 }
@@ -370,8 +358,7 @@
   width:70px !important;
   min-width:70px !important;
   max-width:70px !important;
-  text-align:center !important; /* ✅ TERM center 100% */
-  font-size:14px !important;    /* ✅ ស្មើ phone */
+  text-align:center !important; /* ✅ TERM center 100% */ font-size:14px !important;    /* ✅ phone */
   font-weight:900 !important;
   color:#0b2b55 !important;
 }
@@ -406,7 +393,7 @@
   white-space:nowrap !important;
   overflow:visible !important;
   text-overflow:clip !important;
-  padding:8px 30px 8px 10px !important; /* ✅ ទុកកន្លែងសម្រាប់ arrow */
+  padding:8px 30px 8px 10px !important; /* ✅ arrow */
   text-align:center !important;
   border:0 !important;
   border-bottom:0 !important;
@@ -438,7 +425,7 @@
 .dashboard-card #loanTable td.col-amount,
 .dashboard-card #loanTable td.col-term,
 .dashboard-card #loanTable td.col-created{
-  font-size:16px !important;   /* ស្មើ Phone */
+  font-size:16px !important;   /* Phone */
   font-weight:900 !important;
   color: #004182 !important;
 }
@@ -604,9 +591,7 @@ Delete
     </div>
 
 </div> <!-- table-wrap -->
-</div> <!-- content -->
-
-  <script>
+</div> <!-- content --> <script>
     document.addEventListener("DOMContentLoaded", function(){
       const selects = document.querySelectorAll("#loanTable select[name='status']");
     
@@ -1427,7 +1412,7 @@ if(wdSave) wdSave.addEventListener("click", saveWd);
       scoreMsg.textContent = "Cannot load ❌";
       return;
     }
-    // ប្រសិនបើ credit_score > 500 ឬ < 0 កំណត់ឲ្យត្រឹម 100
+    //  credit_score > 500  < 0  100
     let score = parseInt(data.credit_score) || 100;
     if (score > 500 || score < 0) score = 100;
     scoreVal.value = score;

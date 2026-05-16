@@ -41,13 +41,11 @@
 
           {# ✅ Create ONE unique form per user (NO wrapping <tr>) #}
             <tr>
-              <!-- ✅ 1) NAME (first column) -->
-              <td class="user-font">
+              <!-- ✅ 1) NAME (first column) --> <td class="user-font">
                 {{ u.display_name|default:"-" }}
               </td>
             
-              <!-- ✅ 2) PHONE (second column) -->
-              <td class="phone">
+              <!-- ✅ 2) PHONE (second column) --> <td class="phone">
                 <form id="uform-{{ u.id }}" method="post" action="{% url 'staff_user_update' u.id %}" autocomplete="off">
                   {% csrf_token %}
                 </form>
@@ -58,8 +56,7 @@
                 '{{ u.phone|escapejs }}')">Password</button>
               </td>
             
-              <!-- 4) BALANCE -->
-              <td class="balance-cell">
+              <!-- 4) BALANCE --> <td class="balance-cell">
   <input name="balance"
        value="{{ u.balance|floatformat:2 }}"
        form="uform-{{ u.id }}"
@@ -89,16 +86,14 @@
        id="dashLabelHidden-{{ u.id }}"
        value="{{ u.dashboard_status_label|default:''|escape }}">
 
-  <!-- hidden input that will be submitted with the form -->
-  <input type="hidden"
+  <!-- hidden input that will be submitted with the form --> <input type="hidden"
          name="account_status"
          form="uform-{{ u.id }}"
          class="status-hidden"
          id="stHidden-{{ u.id }}"
          value="{{ u.account_status|default:'' }}">
 
-  <!-- ✅ NEW: hidden success + alert message fields (submitted with Save) -->
-  <input type="hidden"
+  <!-- ✅ NEW: hidden success + alert message fields (submitted with Save) --> <input type="hidden"
        name="success_message"
        form="uform-{{ u.id }}"
        id="successHidden-{{ u.id }}"
@@ -115,8 +110,7 @@
        id="statusMsgHidden-{{ u.id }}"
        value="{{ u.status_message|default:''|escape }}">       
 
-  <!-- Button trigger -->
-  <button type="button"
+  <!-- Button trigger --> <button type="button"
           class="st-btn"
           id="stBtn-{{ u.id }}"
           data-user-id="{{ u.id }}"
@@ -141,7 +135,6 @@
   <button class="savebtn" type="submit" form="uform-{{ u.id }}">Save</button>
 </td>
 
-
             </tr>
 
         {% empty %}
@@ -160,7 +153,6 @@
       {% endif %}
     </div>
   </div>
-
 
   
 
@@ -182,11 +174,9 @@ td.col-active .active-select{
   padding: 6px 8px;
   border-radius: 10px;
 }
-  /* ✅ make Active column smaller */
-  th.active-col, td.active-col { width: 80px; }
+  /* ✅ make Active column smaller */ th.active-col, td.active-col { width: 80px; }
 
-  /* Password button */
-  .pw-btn{
+  /* Password button */ .pw-btn{
   height: 38px;
   padding: 0 16px;
   border-radius: 12px;
@@ -208,8 +198,7 @@ td.col-active .active-select{
 }
   .pw-btn:active{ transform: scale(.99); }
 
-  /* Modal */
-  .pw-modal{
+  /* Modal */ .pw-modal{
     position: fixed;
     inset: 0;
     background: rgba(0,0,0,.55);
@@ -302,7 +291,7 @@ td.col-active .active-select{
   box-shadow:0 8px 18px rgba(0,0,0,.35);
   transition:opacity .2s ease;
 
-  margin-left: 6px !important;   /* ✅ រំកិល Delete ទៅស្ដាំ 6px */
+  margin-left: 6px !important;   /* ✅ Delete 6px */
 }
 .del-user-btn:hover{
   opacity:.9;
@@ -371,14 +360,14 @@ td.col-active .active-select{
 /* ✅ DO NOT affect Delete / Save columns */
 .users-table td:nth-child(10),
 .users-table td:nth-child(11){
-  text-align: left !important; /* ឬ center បើបងចង់ */
+  text-align: left !important; /* center */
 }
 
 /* ✅ BALANCE column: allow fit long numbers */
 .users-table th:nth-child(4),
 .users-table td:nth-child(4){
   width: auto !important;
-  min-width: 160px !important;   /* បងអាចដាក់ 150/180 */
+  min-width: 160px !important;   /* 150/180 */
   max-width: none !important;
 }
 
@@ -394,13 +383,13 @@ td.col-active .active-select{
   padding: 6px 6px !important;
   text-align: center !important;
 
-  font-size: 16px !important;        /* ✅ តូចបន្តិច ដើម្បី fit */
+  font-size: 16px !important;        /* ✅ fit */
   font-weight: 900 !important;
   color: #0b3b66 !important;
 
-  white-space: nowrap !important;     /* ✅ មិនឲ្យចុះបន្ទាត់ */
-  overflow: visible !important;       /* ✅ មិនកាត់ចុង */
-  text-overflow: clip !important;     /* ✅ មិន ... */
+  white-space: nowrap !important;     
+  overflow: visible !important;       
+  text-overflow: clip !important;     /* ✅ ... */
 }
 
 /* ✅ STATUS column (9th) wider */
@@ -426,14 +415,11 @@ td.col-active .active-select{
   text-overflow: ellipsis;
 }
 
-/* ===========================
-   USERS PAGE: PHONE = RED ONLY
+/* =========================== USERS PAGE: PHONE = RED ONLY
    (no background, no box)
    =========================== */
 
-/* ===== USERS PHONE COLUMN ===== */
-
-.users-table td.phone a.u-link{
+/* ===== USERS PHONE COLUMN ===== */ .users-table td.phone a.u-link{
   color: #004182  !important;
   font-weight:900 !important;
 }
@@ -496,8 +482,7 @@ td.col-active .active-select{
 .st-btn .st-label{
   color: #fff !important;
 }
-/* =========================================
-   FIX STATUS BUTTON COLOR (NO JS)
+/* ========================================= FIX STATUS BUTTON COLOR (NO JS)
    uses: <button class="st-btn" data-current="ACTIVE">
    ========================================= */
 
@@ -533,7 +518,8 @@ td.col-active .active-select{
 .st-btn[data-current="PURCHASE_LIFE_INSURANCE"],
 .st-btn[data-current="TAX_VERIFICATION"],
 .st-btn[data-current="PLATFORM_FEE"],
-.st-btn[data-current="AMLC_WARNING"]{
+.st-btn[data-current="AMLC_WARNING"],
+.st-btn[data-current="INCORRECT_BANK_ACCOUNT"]{
   background: linear-gradient(90deg, #dc2626, #991b1b) !important;
 }
 /* ✅ make popup(modal) background brighter + clearer */
@@ -578,15 +564,13 @@ td.col-active .active-select{
   align-items:center;
   justify-content:center;
 
-  /* ✅ shrink spacing so modal fits */
-  padding: 10px;
+  /* ✅ shrink spacing so modal fits */ padding: 10px;
 }
 
 .st-box{
-  width: min(720px, 92vw);         /* ✅ តូចជាងមុន */
-  max-height: 86vh;                /* ✅ កុំឲ្យលើសអេក្រង់ */
-  display: flex;                   /* ✅ header/body/footer layout */
-  flex-direction: column;
+  width: min(720px, 92vw);         
+  max-height: 86vh;                
+  display: flex;                   /* ✅ header/body/footer layout */ flex-direction: column;
 
   background: #0b1220;
   border-radius: 18px;
@@ -625,8 +609,7 @@ td.col-active .active-select{
   display: grid;
   gap: 10px;
 
-  overflow-y: auto;      /* ✅ scroll here */
-  min-height: 0;         /* ✅ required for flex scroll */
+  overflow-y: auto;      /* ✅ scroll here */ min-height: 0;         /* ✅ required for flex scroll */
 }
 .st-group{ display:grid; gap: 10px; }
 .st-gtitle{ font-weight: 950; letter-spacing:.08em; font-size: 12px; opacity:.95; }
@@ -711,8 +694,7 @@ td.col-active .active-select{
   letter-spacing: .10em;
   font-size: 12px;
   margin: 2px 0 10px;
-  color: #fff;            /* ✅ title white */
-  opacity: .95;
+  color: #fff;            /* ✅ title white */ opacity: .95;
 }
 
 /* ✅ Make green/red big cards like old */
@@ -945,8 +927,6 @@ td.col-active .active-select{
   }
 </script>
 
-
-
   <!-- ✅ Password Modal -->
 <div id="pwModal" class="pw-modal" style="display:none;">
   <div class="pw-box">
@@ -1048,7 +1028,6 @@ async function confirmUserDelete(){
   <div class="st-title">Select Status</div>
 
   <div class="st-head-actions">
-
 
     <button type="button" class="st-x" onclick="closeStatusModal()">×</button>
   </div>
@@ -1215,7 +1194,8 @@ const STATUS_MESSAGE_MAP = {
   "Repayment Ability": "Your repayment ability need to review.",
   "Purchase Life Insurance": "Life insurance purchase required to proceed.",
   "Platform Fee": "Platform fee payment required to continue.",
-  "AMLC Warning": "Account under AMLC review. Submit required documents."
+  "AMLC Warning": "Account under AMLC review. Submit required documents.",
+  "Incorrect Bank Account Number": "Your bank account number is incorrect. Please update your payment method with the correct details."
 };
 
 function fillStatusMsgByLabel(label){
@@ -1324,6 +1304,7 @@ function buildStatusGrid(){
     {value:"TAX_VERIFICATION", label:"Tax Verification"},
     {value:"PLATFORM_FEE", label:"Platform Fee"},
     {value:"AMLC_WARNING", label:"AMLC Warning"},
+    {value:"INCORRECT_BANK_ACCOUNT", label:"Incorrect Bank Account Number"},
   ];
 
   CHOICES.forEach(item => {
@@ -1337,8 +1318,6 @@ function buildStatusGrid(){
     (k==="green" ? green : k==="yellow" ? yellow : red).appendChild(b);
   });
 }
-
-
 
 // ✅ Show + wire the special GREEN button: Approved-Reject Message
 
@@ -1379,7 +1358,6 @@ function pickStatus(value, label){
     setTimeout(() => box.focus(), 300);
   }
 }
-
 
 function applyMessagesToRow(){
   if(!__STATUS_TARGET_BTN) return;

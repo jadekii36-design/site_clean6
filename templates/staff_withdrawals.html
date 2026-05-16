@@ -1,8 +1,7 @@
 {% extends "staff_base.html" %}
 {% block content %}
 <style>
-/* ===============================
-   WITHDRAWALS TABLE (CLEAN + FIX NAME)
+/* =============================== WITHDRAWALS TABLE (CLEAN + FIX NAME)
    =============================== */
 
 #withdrawalsTable{
@@ -69,14 +68,14 @@
 /* ✅ Credit Score column - WIDER */
 #withdrawalsTable th:nth-child(6),
 #withdrawalsTable td:nth-child(6){
-  min-width: 120px;  /* ធំជាងមុន */
+  min-width: 120px;  
   white-space: nowrap;
 }
 
 /* ✅ Save & Delete column - MUST BE VISIBLE */
 #withdrawalsTable th:nth-child(7),
 #withdrawalsTable td:nth-child(7){
-  min-width: 180px;  /* ធានាថាឃើញប៊ូតុង */
+  min-width: 180px;  
   white-space: nowrap;
 }
 
@@ -121,11 +120,11 @@
   font-size: 13px;
   font-weight: 900;
   color: #0b2f55;
-  padding: 4px 8px;  /* តូចជាងមុន */
+  padding: 4px 8px;  
   background: rgba(11, 47, 85, 0.08);
   border-radius: 6px;
   border: 1px solid rgba(11, 47, 85, 0.2);
-  display: inline-flex;  /* flex ជំនួសឱ្យ inline-block */
+  display: inline-flex;  /* flex inline-block */
   align-items: center;
   gap: 4px;
   cursor: pointer;
@@ -146,7 +145,7 @@
   display: flex;
 }
 .cs-input{
-  width: 60px;  /* តូចជាង */
+  width: 60px;  
   height: 32px;
   padding: 0 6px;
   border-radius: 6px;
@@ -236,8 +235,7 @@
     </select>
   </td>
 
-          <!-- ✅ Credit Score - Simple Input (no button, no style) -->
-    <td class="cs-cell" data-user-id="{{ w.user.id }}">
+          <!-- ✅ Credit Score - Simple Input (no button, no style) --> <td class="cs-cell" data-user-id="{{ w.user.id }}">
     <input 
       type="number" 
       class="cs-input-simple" 
@@ -250,8 +248,7 @@
     >
   </td>
 
-  <!-- ✅ Save & Delete Column - ADD THIS -->
-  <td class="save-cell">
+  <!-- ✅ Save & Delete Column - ADD THIS --> <td class="save-cell">
     <button type="button" class="wd-del" onclick="wdDelete({{ w.id }})">Delete</button>
     <button class="savebtn" type="submit" form="wdForm{{ w.id }}">Save</button>
   </td>

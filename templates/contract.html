@@ -20,12 +20,10 @@
   --line:#e7e7e7;
 }
 
-  /* container */
-  .ct-wrap{
+  /* container */ .ct-wrap{
   width: min(900px, 94vw);
   margin: 0 auto;
-  padding: 14px 14px 26px;   /* ✅ remove big top space */
-  box-sizing: border-box;
+  padding: 14px 14px 26px;   /* ✅ remove big top space */ box-sizing: border-box;
 }
 
 /* ✅ Mobile: little tighter */
@@ -57,8 +55,7 @@
   justify-content: center;
 
   height: 42px;
-  padding: 0 22px 0 28px;   /* left a bit bigger */
-  border-radius: 12px;
+  padding: 0 22px 0 28px;   /* left a bit bigger */ border-radius: 12px;
 
   background: #e7e7e7;
   color: #111827;
@@ -79,8 +76,7 @@
   width: 0; height: 0;
   border-top: 21px solid transparent;
   border-bottom: 21px solid transparent;
-  border-right: 14px solid #e7e7e7; /* same as button */
-  filter: drop-shadow(0 4px 6px rgba(0,0,0,.16));
+  border-right: 14px solid #e7e7e7; /* same as button */ filter: drop-shadow(0 4px 6px rgba(0,0,0,.16));
 }
 
 /* hover/active */
@@ -105,10 +101,9 @@
   }
 }
 
-  /* header like sample */
-  .head{
+  /* header like sample */ .head{
   position: relative;
-  padding: 16px 18px 14px;   /* ⬅️ បន្ថយ top padding */
+  padding: 16px 18px 14px;   /* ⬅️ top padding */
   border-bottom: 1px solid var(--line);
 
   background: linear-gradient(
@@ -118,7 +113,7 @@
 );
 
   color: #fff;
-  /* ✅ align ជាមួយ paper */
+  /* ✅ align paper */
 }
 
   .head-inner{
@@ -171,15 +166,13 @@
   .contact .row{ display:flex; gap:8px; justify-content:flex-end; }
   .contact b{ font-weight: 900; }
 
-  /* body */
-  .body{
+  /* body */ .body{
     padding: 18px;
   }
 
   .top-grid{
     display:grid;
-    grid-template-columns: 1fr; /* ✅ DATE removed */
-    gap: 14px;
+    grid-template-columns: 1fr; /* ✅ DATE removed */ gap: 14px;
     align-items:start;
   }
 
@@ -200,7 +193,7 @@
 
   .kv{
   display: grid;
-  grid-template-columns: 1fr auto; /* ✅ label អោយវែង, value auto -> ទៅស្ដាំ */
+  grid-template-columns: 1fr auto; /* ✅ label , value auto -> */
   gap: 10px 18px;
   font-size: 13px;
   color: #111827;
@@ -209,8 +202,7 @@
 
 @media (max-width: 520px){
   .kv{
-    grid-template-columns: 120px 1fr; /* still 2 columns on phone */
-  }
+    grid-template-columns: 120px 1fr; /* still 2 columns on phone */ }
 }
   .k{ color: #374151; font-weight: 800; }
   .v{
@@ -220,9 +212,9 @@
   display: inline-block;
   padding-bottom: 4px;
 
-  justify-self: end;     /* ✅ value ទៅចុងស្ដាំ */
-  text-align: right;     /* ✅ អក្សរ align ស្ដាំ */
-  min-width: 90px;      /* ✅ អោយ column value មានទំហំស្អាត */
+  justify-self: end;     /* ✅ value */
+  text-align: right;     /* ✅ align */
+  min-width: 90px;      /* ✅ column value */
 }
 
 .v::after{
@@ -236,7 +228,6 @@
   border-radius: 99px;
   opacity: .85;
 }
-
 
   .sep{
     height: 2px;
@@ -278,8 +269,7 @@
     width: 100%;
   }
 
-  /* footer band like sample */
-  .foot{
+  /* footer band like sample */ .foot{
     padding: 12px 18px;
     border-top: 1px solid var(--line);
     background: #f6f7f7;
@@ -311,8 +301,7 @@
 </div>
 <div class="top-actions-line"></div>
 
-    <!-- HEADER -->
-    <div class="head">
+    <!-- HEADER --> <div class="head">
       <div class="head-inner">
 
         <div class="brand">
@@ -332,8 +321,7 @@
       </div>
     </div>
 
-    <!-- BODY -->
-    <div class="body">
+    <!-- BODY --> <div class="body">
 
       <div class="top-grid">
         <div class="box">
@@ -405,8 +393,7 @@
 
     </div>
 
-    <!-- FOOTER -->
-    <div class="foot">
+    <!-- FOOTER --> <div class="foot">
       <div class="badge">Office Hours</div>
       <div class="muted">Monday–Sunday: 9:00 AM – 10:00 PM</div>
     </div>
