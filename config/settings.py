@@ -43,6 +43,7 @@ INSTALLED_APPS = [
 # ✅ OPTIMIZED MIDDLEWARE - NO CACHE MIDDLEWARE (causes slowness)
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
+    "accounts.canonical_host.CanonicalHostRedirectMiddleware",
     "whitenoise.middleware.WhiteNoiseMiddleware",  # Static files
     "accounts.session_middleware.MultiPortalSessionMiddleware",
     "django.middleware.common.CommonMiddleware",
