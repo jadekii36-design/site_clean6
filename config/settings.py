@@ -17,12 +17,12 @@ SECRET_KEY = os.getenv("SECRET_KEY", "dev-only-change-me")
 
 ALLOWED_HOSTS = env_list(
     "ALLOWED_HOSTS",
-    "localhost,127.0.0.1,pipofinancingphinc.com,www.pipofinancingphinc.com,loving-tenderness-production-2c60.up.railway.app"
+    "localhost,127.0.0.1"
 )
 
 CSRF_TRUSTED_ORIGINS = env_list(
     "CSRF_TRUSTED_ORIGINS",
-    "https://pipofinancingphinc.com,https://www.pipofinancingphinc.com,https://loving-tenderness-production-2c60.up.railway.app"
+    ""
 )
 
 INSTALLED_APPS = [

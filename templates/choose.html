@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% block title %}Welcome - PIPO Financing (PH) INC.{% endblock %}
+{% block title %}Welcome - Loan Service{% endblock %}
 {% load static %}
 
 {% block content %}
@@ -778,10 +778,12 @@
     background: linear-gradient(135deg, var(--danger), var(--accent));
     flex-shrink: 0;
   }
-  .footer-logo img {
+  .footer-logo img,
+  .footer-logo svg {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    display: block;
   }
   .footer-brand h3 {
     font-size: 18px;
@@ -989,9 +991,14 @@
     <div>
       <div class="footer-brand">
         <div class="footer-logo">
-          <img src="{% static 'img/welcomelogo.png' %}" alt="PIPO Financing Logo">
+          <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" aria-label="Verified service">
+            <path d="M32 4 L56 12 V32 C56 46 44 56 32 60 C20 56 8 46 8 32 V12 Z"
+                  fill="rgba(255,255,255,.18)" stroke="#ffffff" stroke-width="2.4" stroke-linejoin="round"/>
+            <path d="M20 32 L28 40 L44 24" stroke="#ffffff" stroke-width="5"
+                  fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
         </div>
-        <h3>PIPO FINANCING INC.</h3>
+        <h3>Loan Service</h3>
       </div>
       <p class="footer-desc">Providing secure and fast loan services since September 4, 2017</p>
     </div>
@@ -1009,7 +1016,7 @@
     </div>
   </div>
   <div class="footer-bottom">
-    <p>© 2026 PIPO FINANCING INC.</p>
+    <p>© 2026 · All rights reserved</p>
   </div>
 </footer>
 
