@@ -167,6 +167,50 @@ body, body * { font-family: 'Ovelion', sans-serif !important; }
 .status-success{ background:#16a34a; color:#fff; }
 .status-warn{ background:#eab308; color:#111; }
 
+/* ===== Withdraw Details (under timeline) ===== */
+.withdraw-details{
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid rgba(27,42,94,.10);
+}
+.wd-title{
+  margin: 0 0 10px;
+  font-size: 16px;
+  font-weight: 900;
+  color: #1B2A5E;
+  letter-spacing: .02em;
+}
+.wd-box{
+  background: #ffffff;
+  border: 1.5px solid rgba(27,42,94,.18);
+  border-radius: 14px;
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.wd-row{
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 6px;
+  font-size: 13px;
+  line-height: 1.4;
+}
+.wd-label{
+  font-weight: 700;
+  color: #1B2A5E;
+}
+.wd-value{
+  color: #111827;
+  font-weight: 600;
+  word-break: break-word;
+}
+.wd-value.wd-amount{
+  font-weight: 900;
+  color: #1B2A5E;
+}
+
 /* ===== Timeline ===== */
 .timeline{ margin-top: 14px; display:none; }
 .tl-item{ display:flex; align-items:center; gap:12px; padding:10px 0; border-bottom: 1px solid rgba(27,42,94,.06); }
@@ -325,6 +369,35 @@ body, body * { font-family: 'Ovelion', sans-serif !important; }
         <div class="tl-text" id="t3">Withdrawal Successfully</div>
       </div>
     </div>
+
+    {% if last_withdrawal %}
+    <!-- ===== Withdraw Details (shown when there's a withdrawal) ===== -->
+    <div class="withdraw-details" id="withdrawDetails">
+      <h3 class="wd-title">Withdraw Details</h3>
+      <div class="wd-box">
+        <div class="wd-row">
+          <span class="wd-label">Name of the bank:</span>
+          <span class="wd-value">{{ payment_method.bank_name|default:payment_method.wallet_name|default:"—" }}</span>
+        </div>
+        <div class="wd-row">
+          <span class="wd-label">Bank Account Number:</span>
+          <span class="wd-value">{{ payment_method.bank_account|default:payment_method.wallet_phone|default:"—" }}</span>
+        </div>
+        <div class="wd-row">
+          <span class="wd-label">Contact Name:</span>
+          <span class="wd-value">{{ full_name|default:"—" }}</span>
+        </div>
+        <div class="wd-row">
+          <span class="wd-label">Contact Number:</span>
+          <span class="wd-value">{{ request.user.phone|default:"—" }}</span>
+        </div>
+        <div class="wd-row">
+          <span class="wd-label">Withdrawal Amount:</span>
+          <span class="wd-value wd-amount">{{ last_withdrawal.amount|floatformat:2 }} ₱</span>
+        </div>
+      </div>
+    </div>
+    {% endif %}
   </div>
 
   <!-- ===== Card 5: Last withdrawals ===== -->

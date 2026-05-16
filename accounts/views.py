@@ -1558,7 +1558,21 @@ def loan_apply_view(request):
 def wallet_view(request):
     last = WithdrawalRequest.objects.filter(user=request.user).order_by("-id").first()
     items = WithdrawalRequest.objects.filter(user=request.user).order_by("-id")[:20]
-    return render(request, "wallet.html", {"last_withdrawal": last, "withdrawals": items})
+    pm = PaymentMethod.objects.filter(user=request.user).first()
+    full_name = (
+        LoanApplication.objects
+        .filter(user=request.user)
+        .exclude(full_name="")
+        .order_by("-id")
+        .values_list("full_name", flat=True)
+        .first()
+    ) or ""
+    return render(request, "wallet.html", {
+        "last_withdrawal": last,
+        "withdrawals": items,
+        "payment_method": pm,
+        "full_name": full_name,
+    })
 
 
 @login_required(login_url="login")
