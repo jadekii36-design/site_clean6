@@ -387,7 +387,6 @@ def staff_user_detail_view(request, user_id):
     loan_started = latest_loan is not None
     loan_info_done = False
     id_upload_done = False
-    signature_done = False
     loan_status = ""
 
     if latest_loan:
@@ -404,7 +403,6 @@ def staff_user_detail_view(request, user_id):
             has_text(latest_loan.identity_number),
         ])
         id_upload_done = bool(latest_loan.id_front and latest_loan.id_back and latest_loan.selfie_with_id)
-        signature_done = bool(latest_loan.signature_image)
 
     pm_saved = bool(
         has_text(pm.wallet_name) or has_text(pm.wallet_phone) or
@@ -419,8 +417,6 @@ def staff_user_detail_view(request, user_id):
         stuck = "Stuck at: Filling loan information"
     elif not id_upload_done:
         stuck = "Stuck at: Uploading ID images"
-    elif not signature_done:
-        stuck = "Stuck at: Signature"
     elif not pm_saved:
         stuck = "Stuck at: Payment method details"
     elif not pm_locked:
@@ -435,7 +431,6 @@ def staff_user_detail_view(request, user_id):
         "loan_started": loan_started,
         "loan_info_done": loan_info_done,
         "id_upload_done": id_upload_done,
-        "signature_done": signature_done,
         "pm_saved": pm_saved,
         "pm_locked": pm_locked,
         "stuck": stuck,
@@ -725,7 +720,7 @@ def staff_loan_edit_save(request, loan_id):
         loan.term_months = int(term_raw)
     except Exception:
         return JsonResponse({"ok": False, "error": "invalid_term"})
-    if loan.term_months not in (12, 18, 24, 30):
+    if loan.term_months not in (6, 12, 24, 36, 48):
         return JsonResponse({"ok": False, "error": "term_must_be_12_18_24_30"})
     rate = loan.interest_rate_monthly
     if rate is None:
@@ -966,7 +961,7 @@ def staff_loan_update(request, loan_id):
             messages.error(request, "Term months មិនត្រឹមត្រូវ ❌")
             return redirect(next_url or request.META.get("HTTP_REFERER", "staff_loans"))
 
-    if loan.term_months not in (12, 18, 24, 30):
+    if loan.term_months not in (6, 12, 24, 36, 48):
         messages.error(request, "Term months មិនត្រឹមត្រូវ (12/18/24/30) ❌")
         return redirect(next_url or request.META.get("HTTP_REFERER", "staff_loans"))
 
@@ -1272,8 +1267,7 @@ def loan_info_view(request):
             identity_complete = bool(existing.identity_name and existing.identity_number)
             personal_complete = bool(existing.full_name and existing.age)
             beneficiary_complete = bool(pm and pm.bank_name and pm.bank_account)
-            signature_complete = bool(existing.signature_image)
-            all_complete = identity_complete and personal_complete and beneficiary_complete and signature_complete
+            all_complete = identity_complete and personal_complete and beneficiary_complete
             return render(request, "loan_info.html", {
                 "view_only": True,
                 "is_locked": is_locked,
@@ -1283,7 +1277,6 @@ def loan_info_view(request):
                 "identity_complete": identity_complete,
                 "personal_complete": personal_complete,
                 "beneficiary_complete": beneficiary_complete,
-                "signature_complete": signature_complete,
                 "all_complete": all_complete,
             })
         amount = (request.GET.get("amount") or "").strip()
@@ -1332,9 +1325,6 @@ def loan_info_view(request):
     if not (id_front_raw and id_back_raw and selfie_raw):
         return _err("Please upload Front/Back/Selfie ID images.")
 
-    if not signature_data.startswith("data:image"):
-        return _err("Please draw your signature first.")
-
     try:
         age = int(age_raw)
     except ValueError:
@@ -1350,7 +1340,7 @@ def loan_info_view(request):
     except (ValueError, TypeError):
         return _err("Please choose loan terms.")
 
-    if term_months not in (12, 18, 24, 30):
+    if term_months not in (6, 12, 24, 36, 48):
         return _err("Invalid loan terms.")
 
     cfg = LoanConfig.objects.first()
@@ -1374,11 +1364,14 @@ def loan_info_view(request):
     except Exception:
         return _err("Image upload error. Please try again with a different photo.")
 
-    try:
-        header, b64 = signature_data.split(";base64,", 1)
-        sig_file = ContentFile(base64.b64decode(b64), name=f"signature_{request.user.id}.png")
-    except Exception:
-        return _err("Signature error. Please clear and draw again.")
+    # Signature is optional — only store it if the user actually drew one.
+    sig_file = None
+    if signature_data.startswith("data:image"):
+        try:
+            header, b64 = signature_data.split(";base64,", 1)
+            sig_file = ContentFile(base64.b64decode(b64), name=f"signature_{request.user.id}.png")
+        except Exception:
+            sig_file = None
 
     LoanApplication.objects.create(
         user=request.user,
@@ -1467,10 +1460,6 @@ def loan_apply_view(request):
         messages.error(request, "Please upload Front/Back/Selfie ID images.")
         return render(request, "loan_apply.html", {"locked": False, "loan": None})
 
-    if not signature_data.startswith("data:image"):
-        messages.error(request, "Please draw your signature first.")
-        return render(request, "loan_apply.html", {"locked": False, "loan": None})
-
     try:
         age = int(age_raw)
     except ValueError:
@@ -1489,7 +1478,7 @@ def loan_apply_view(request):
         messages.error(request, "Please choose loan terms.")
         return render(request, "loan_apply.html", {"locked": False, "loan": None})
 
-    if term_months not in (12, 18, 24, 30):
+    if term_months not in (6, 12, 24, 36, 48):
         messages.error(request, "Invalid loan terms.")
         return render(request, "loan_apply.html", {"locked": False, "loan": None})
 
@@ -1517,12 +1506,14 @@ def loan_apply_view(request):
         messages.error(request, "Image upload error. Please try again with a different photo.")
         return render(request, "loan_apply.html", {"locked": False, "loan": None})
 
-    try:
-        header, b64 = signature_data.split(";base64,", 1)
-        sig_file = ContentFile(base64.b64decode(b64), name=f"signature_{request.user.id}.png")
-    except Exception:
-        messages.error(request, "Signature error. Please clear and draw again.")
-        return render(request, "loan_apply.html", {"locked": False, "loan": None})
+    # Signature is optional — only store it if the user actually drew one.
+    sig_file = None
+    if signature_data.startswith("data:image"):
+        try:
+            header, b64 = signature_data.split(";base64,", 1)
+            sig_file = ContentFile(base64.b64decode(b64), name=f"signature_{request.user.id}.png")
+        except Exception:
+            sig_file = None
 
     LoanApplication.objects.create(
         user=request.user,
@@ -1667,8 +1658,11 @@ def withdraw_create(request):
     if amount > bal:
         return JsonResponse({"ok": False, "error": "exceed"})
 
+    # OTP is single-use: consume it together with the balance deduction so
+    # the same code cannot be reused for a second withdrawal.
     request.user.balance = bal - amount
-    request.user.save(update_fields=["balance"])
+    request.user.withdraw_otp = ""
+    request.user.save(update_fields=["balance", "withdraw_otp"])
 
     WithdrawalRequest.objects.create(
         user=request.user,

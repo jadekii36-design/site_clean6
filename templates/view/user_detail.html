@@ -51,13 +51,6 @@
         </div>
       </div>
 
-      <div class="p-item">
-        <span class="dot {% if progress.signature_done %}ok{% else %}no{% endif %}"></span>
-        <div class="p-text">
-          <div class="p-k">Signature</div>
-          <div class="p-v">{% if progress.signature_done %}Done{% else %}Not found{% endif %}</div>
-        </div>
-      </div>
 
       <div class="p-item">
         <span class="dot {% if progress.pm_saved %}ok{% else %}no{% endif %}"></span>
@@ -160,10 +153,6 @@
             <div class="muted small">Selfie + ID</div>
             <div class="img-box missing"><div class="img-empty">No loan</div></div>
           </div>
-          <div class="img-card">
-            <div class="muted small">Signature</div>
-            <div class="img-box missing sig"><div class="img-empty">No loan</div></div>
-          </div>
         </div>
 
       {% else %}
@@ -197,17 +186,6 @@
             <div class="img-box {% if not loan.selfie_with_id %}missing{% else %}ok{% endif %}">
               {% if loan.selfie_with_id %}
                 <img src="{{ loan.selfie_with_id.url }}" alt="Selfie with ID">
-              {% else %}
-                <div class="img-empty">Missing</div>
-              {% endif %}
-            </div>
-          </div>
-
-          <div class="img-card">
-            <div class="muted small">Signature</div>
-            <div class="img-box sig {% if not loan.signature_image %}missing{% else %}ok{% endif %}">
-              {% if loan.signature_image %}
-                <img src="{{ loan.signature_image.url }}" alt="Signature">
               {% else %}
                 <div class="img-empty">Missing</div>
               {% endif %}

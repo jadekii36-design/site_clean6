@@ -504,7 +504,6 @@ body, body * { font-family: 'Ovelion', sans-serif !important; }
   <input type="hidden" name="bank_name" id="hBankName">
   <input type="hidden" name="bank_account" id="hBankAccount">
   <input type="hidden" name="account_holder" id="hAccountHolder">
-  <input type="hidden" name="signature_data" id="hSignatureData">
   <input type="hidden" name="loan_amount" id="hLoanAmount" value="{{ amount }}">
   <input type="hidden" name="loan_terms" id="hLoanTerms" value="{{ term }}">
   <input type="file" name="id_front" id="fileIdFront" accept="image/*">
@@ -565,18 +564,6 @@ body, body * { font-family: 'Ovelion', sans-serif !important; }
         <div class="sc-sub">Bank account for disbursement</div>
       </div>
       <span class="sc-badge incomplete" id="badge3">Incomplete</span>
-    </div>
-
-    <!-- Step 4: Signature -->
-    <div class="step-card" id="card4" onclick="openModal('modal4')">
-      <div class="sc-icon">
-        <svg viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"/></svg>
-      </div>
-      <div class="sc-body">
-        <div class="sc-name">Signature</div>
-        <div class="sc-sub">Draw your digital signature</div>
-      </div>
-      <span class="sc-badge incomplete" id="badge4">Incomplete</span>
     </div>
 
   </div>
@@ -847,33 +834,6 @@ body, body * { font-family: 'Ovelion', sans-serif !important; }
   </div>
 </div>
 
-<!-- ===== MODAL 4: SIGNATURE ===== -->
-<div class="modal-overlay" id="modal4">
-  <div class="modal-box">
-    <div class="modal-header">
-      <div class="modal-title">
-        <svg viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"/></svg>
-        Signature
-      </div>
-      <button class="modal-close" onclick="closeModal('modal4')">✕</button>
-    </div>
-    <div class="modal-divider"></div>
-    {% if view_only and existing.signature_image %}
-    <div class="vo-sig-display">
-      <img src="{{ existing.signature_image.url }}" alt="Signature">
-      <span class="vo-verified">✓ Signature on file</span>
-    </div>
-    {% else %}
-    <div class="sig-hint">Draw your signature in the box below</div>
-    <canvas id="sigCanvas" class="sig-canvas"></canvas>
-    <div style="overflow:hidden;">
-      <button class="sig-clear-btn" type="button" id="sigClearBtn">Clear</button>
-    </div>
-    <button class="modal-btn" type="button" onclick="confirmStep4()" style="margin-top:24px;">Confirm Signature</button>
-    {% endif %}
-  </div>
-</div>
-
 <script>
 // ===== LOAN SUMMARY =====
 (function(){
@@ -898,7 +858,6 @@ body, body * { font-family: 'Ovelion', sans-serif !important; }
 function openModal(id){
   const el = document.getElementById(id);
   if(el){ el.classList.add("open"); document.body.style.overflow="hidden"; }
-  if(id === "modal4") initSigCanvas();
 }
 function closeModal(id){
   const el = document.getElementById(id);
@@ -922,7 +881,7 @@ function updateBadge(n, done){
   if(done){ b.textContent="✓ Complete"; b.className="sc-badge complete"; c.classList.add("done"); }
   else { b.textContent="Incomplete"; b.className="sc-badge incomplete"; c.classList.remove("done"); }
 }
-(function(){ const s=loadSteps(); for(let n=1;n<=4;n++) if(s["step"+n]) updateBadge(n,true); })();
+(function(){ const s=loadSteps(); for(let n=1;n<=3;n++) if(s["step"+n]) updateBadge(n,true); })();
 
 // ===== STEP 1 =====
 function confirmStep1(){
@@ -1002,41 +961,10 @@ function confirmStep3(){
   closeModal("modal3");
 }
 
-// ===== STEP 4: SIGNATURE =====
-let sigCanvas, sigCtx, sigDrawing=false, sigHasInk=false, sigLastX=0, sigLastY=0, sigInit=false;
-
-function initSigCanvas(){
-  if(sigInit) return; sigInit=true;
-  sigCanvas=document.getElementById("sigCanvas"); if(!sigCanvas) return;
-  sigCtx=sigCanvas.getContext("2d");
-  function resize(){
-    const rect=sigCanvas.getBoundingClientRect(), r=window.devicePixelRatio||1;
-    sigCanvas.width=Math.floor(rect.width*r); sigCanvas.height=Math.floor(rect.height*r);
-    sigCtx.setTransform(r,0,0,r,0,0);
-    sigCtx.lineWidth=3; sigCtx.lineCap="round"; sigCtx.lineJoin="round";
-    sigCtx.strokeStyle="#1B2A5E";
-    sigHasInk=false;
-  }
-  resize(); window.addEventListener("resize",resize);
-  function getPos(e){ const rect=sigCanvas.getBoundingClientRect(),t=e.touches&&e.touches[0]; return{x:(t?t.clientX:e.clientX)-rect.left,y:(t?t.clientY:e.clientY)-rect.top}; }
-  function start(e){ sigDrawing=true; const p=getPos(e); sigLastX=p.x; sigLastY=p.y; e.preventDefault(); }
-  function move(e){ if(!sigDrawing) return; const p=getPos(e); sigCtx.beginPath(); sigCtx.moveTo(sigLastX,sigLastY); sigCtx.lineTo(p.x,p.y); sigCtx.stroke(); sigLastX=p.x; sigLastY=p.y; sigHasInk=true; e.preventDefault(); }
-  function end(){ sigDrawing=false; }
-  sigCanvas.addEventListener("mousedown",start); sigCanvas.addEventListener("mousemove",move); window.addEventListener("mouseup",end);
-  sigCanvas.addEventListener("touchstart",start,{passive:false}); sigCanvas.addEventListener("touchmove",move,{passive:false}); sigCanvas.addEventListener("touchend",end);
-  document.getElementById("sigClearBtn").addEventListener("click",function(){ sigCtx.clearRect(0,0,sigCanvas.width,sigCanvas.height); sigHasInk=false; });
-}
-
-function confirmStep4(){
-  if(!sigHasInk){ alert("Please draw your signature first."); return; }
-  document.getElementById("hSignatureData").value=sigCanvas.toDataURL("image/png");
-  markStep(4,{has_signature:true}); closeModal("modal4");
-}
-
 // ===== CONFIRM APPLICATION =====
 function confirmApplication(){
   const steps=loadSteps();
-  for(let n=1;n<=4;n++){
+  for(let n=1;n<=3;n++){
     if(!steps["step"+n]){ alert("Please complete Step "+n+" first."); openModal("modal"+n); return; }
   }
   const s1=steps.step1, s2=steps.step2, s3=steps.step3;
@@ -1090,7 +1018,7 @@ document.addEventListener("keydown",function(e){ if(e.key==="Escape") document.q
 {% if view_only %}
 // ===== VIEW-ONLY MODE INIT =====
 (function(){
-  for(var n=1;n<=4;n++) updateBadge(n,true);
+  for(var n=1;n<=3;n++) updateBadge(n,true);
 
   document.getElementById("m1IdentityName").value = "{{ existing.identity_name|escapejs }}";
   document.getElementById("m1IdentityNumber").value = "{{ existing.identity_number|escapejs }}";
@@ -1127,9 +1055,6 @@ document.addEventListener("keydown",function(e){ if(e.key==="Escape") document.q
   document.querySelectorAll(".modal-box input:not([type='hidden']), .modal-box textarea, .modal-box select").forEach(function(el){
     el.disabled = true;
   });
-
-  var canvas = document.getElementById("sigCanvas");
-  if(canvas) canvas.style.pointerEvents = "none";
 })();
 {% endif %}
 </script>

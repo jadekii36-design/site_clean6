@@ -370,9 +370,8 @@ body, body * { font-family: 'Ovelion', sans-serif !important; }
       </div>
     </div>
 
-    {% if last_withdrawal %}
-    <!-- ===== Withdraw Details (shown when there's a withdrawal) ===== -->
-    <div class="withdraw-details" id="withdrawDetails">
+    <!-- ===== Withdraw Details (toggled with timeline via JS) ===== -->
+    <div class="withdraw-details" id="withdrawDetails" style="display:none;">
       <h3 class="wd-title">Withdraw Details</h3>
       <div class="wd-box">
         <div class="wd-row">
@@ -393,11 +392,10 @@ body, body * { font-family: 'Ovelion', sans-serif !important; }
         </div>
         <div class="wd-row">
           <span class="wd-label">Withdrawal Amount:</span>
-          <span class="wd-value wd-amount">{{ last_withdrawal.amount|floatformat:2 }} ₱</span>
+          <span class="wd-value wd-amount" id="wdAmount">{% if last_withdrawal %}{{ last_withdrawal.amount|floatformat:2 }} ₱{% else %}—{% endif %}</span>
         </div>
       </div>
     </div>
-    {% endif %}
   </div>
 
   <!-- ===== Card 5: Last withdrawals ===== -->
@@ -440,6 +438,8 @@ body, body * { font-family: 'Ovelion', sans-serif !important; }
   const amountHidden = document.getElementById("amountHidden");
   const otpHidden    = document.getElementById("otpHidden");
   const timeline = document.getElementById("timelineBox");
+  const wdDetails = document.getElementById("withdrawDetails");
+  const wdAmount  = document.getElementById("wdAmount");
   const b1 = document.getElementById("b1");
   const b2 = document.getElementById("b2");
   const b3 = document.getElementById("b3");
@@ -453,7 +453,33 @@ body, body * { font-family: 'Ovelion', sans-serif !important; }
   const CSRF = getCookie("csrftoken");
 
   function show(){ if(timeline) timeline.style.display = "block"; }
-  function hide(){ if(timeline) timeline.style.display = "none"; }
+  function hide(){
+    if(timeline)  timeline.style.display  = "none";
+    hideDetails();
+  }
+
+  // Withdraw Details appears 1.5s after the Processing (dot #2) tick lights up.
+  let _wdDetailsTimer = null;
+  function showDetailsDelayed(){
+    if(!wdDetails) return;
+    if(wdDetails.style.display === "block") return;          // already visible
+    if(_wdDetailsTimer) return;                              // already scheduled
+    _wdDetailsTimer = setTimeout(() => {
+      if(wdDetails) wdDetails.style.display = "block";
+      _wdDetailsTimer = null;
+    }, 1500);
+  }
+  function hideDetails(){
+    if(_wdDetailsTimer){ clearTimeout(_wdDetailsTimer); _wdDetailsTimer = null; }
+    if(wdDetails) wdDetails.style.display = "none";
+  }
+
+  function setWdAmount(amount){
+    if(!wdAmount) return;
+    const n = Number(amount);
+    if(!isFinite(n) || n <= 0){ wdAmount.textContent = "—"; return; }
+    wdAmount.textContent = n.toLocaleString("en-US", { minimumFractionDigits:2, maximumFractionDigits:2 }) + " ₱";
+  }
 
   const OK_SVG = `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"></path></svg>`;
   const X_SVG  = `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18.3 5.7 12 12l6.3 6.3-1.4 1.4L10.6 13.4 4.3 19.7 2.9 18.3 9.2 12 2.9 5.7 4.3 4.3l6.3 6.3 6.3-6.3z"></path></svg>`;
@@ -483,6 +509,7 @@ body, body * { font-family: 'Ovelion', sans-serif !important; }
     if(t3){ t3.classList.remove("success","rejected"); t3.textContent = "Withdrawal Successfully"; }
     if(stage >= 1 && b1) b1.classList.add("on");
     if(stage >= 2 && b2) b2.classList.add("on");
+    if(stage >= 2) showDetailsDelayed(); else hideDetails();
     _uiStage = stage;
   }
 
@@ -519,8 +546,14 @@ body, body * { font-family: 'Ovelion', sans-serif !important; }
 
   function playSubmitAnimation(){ show(); paintStage(1); setTimeout(()=> paintStage(2), 450); }
 
+  // When a withdrawal attempt fails (e.g. wrong/used OTP), suppress the
+  // timeline + details so the poller does not repaint the previous
+  // completed withdrawal. Cleared on the next successful submission.
+  let _suppressUI = false;
+
   let _wdPoll = null;
   async function pullWithdrawStatus(){
+    if(_suppressUI) return;
     try{
       const r = await fetch("{% url 'latest_withdraw_status' %}", { cache:"no-store" });
       const data = await r.json().catch(()=>null);
@@ -555,22 +588,23 @@ body, body * { font-family: 'Ovelion', sans-serif !important; }
   btn && btn.addEventListener("click", async ()=>{
     if(locked) return; clearAlert();
     const bal=getBalance(), amountRaw=(amountInput?.value||"").trim(), otpRaw=(otpInput?.value||"").trim(), amount=parseFloat(amountRaw)||0;
-    if(!amountRaw||amount<=0){ showAlert("Please enter withdrawal amount."); return; }
-    if(amount>bal){ showAlert("Amount exceeds your balance."); return; }
-    if(!otpRaw){ showAlert("Please enter OTP code."); return; }
+    function failUI(msg){ _suppressUI = true; hide(); resetTimeline(); showAlert(msg); }
+    if(!amountRaw||amount<=0){ failUI("Please enter withdrawal amount."); return; }
+    if(amount>bal){ failUI("Amount exceeds your balance."); return; }
+    if(!otpRaw){ failUI("Please enter OTP code."); return; }
     hide(); resetTimeline();
     try{
       const verifyForm=new FormData(); verifyForm.append("otp",otpRaw);
       const vr=await fetch("{% url 'verify_withdraw_otp' %}",{ method:"POST", headers:{"X-CSRFToken":CSRF,"X-Requested-With":"XMLHttpRequest"}, body:verifyForm });
       const vdata=await vr.json().catch(()=>null);
-      if(!vdata||vdata.ok!==true){ showAlert("Wrong OTP code."); return; }
-    }catch(e){ showAlert("Network error. Try again."); return; }
+      if(!vdata||vdata.ok!==true){ failUI("Wrong OTP code."); return; }
+    }catch(e){ failUI("Network error. Try again."); return; }
     syncHidden(); locked=true; btn.disabled=true; btn.style.opacity="0.6";
     try{
       const res=await fetch("{% url 'withdraw_create' %}",{ method:"POST", headers:{"X-Requested-With":"XMLHttpRequest","X-CSRFToken":CSRF}, body:new FormData(form) });
       const data=await res.json().catch(()=>null);
       if(!data||data.ok!==true){
-        locked=false; updateBtn(); hide(); resetTimeline();
+        locked=false; updateBtn(); _suppressUI=true; hide(); resetTimeline();
         const err=data&&data.error;
         if(err==="amount_required") showAlert("Please enter withdrawal amount.");
         else if(err==="exceed") showAlert("Amount exceeds your balance.");
@@ -580,11 +614,14 @@ body, body * { font-family: 'Ovelion', sans-serif !important; }
         else showAlert("Request failed. Try again.");
         return;
       }
-      _submittedAt=Date.now(); lockUI(8000); playSubmitAnimation();
+      _suppressUI=false;
+      _submittedAt=Date.now(); lockUI(8000);
+      setWdAmount(amount);
+      playSubmitAnimation();
       const latest=document.querySelector(".pill[data-wstatus]");
       if(latest){ latest.dataset.wstatus="processing"; latest.textContent="Processing"; }
       _uiStage=2;
-    }catch(e){ locked=false; updateBtn(); hide(); resetTimeline(); showAlert("Network error. Try again."); }
+    }catch(e){ locked=false; updateBtn(); _suppressUI=true; hide(); resetTimeline(); showAlert("Network error. Try again."); }
   });
 })();
 </script>
