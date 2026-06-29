@@ -407,11 +407,11 @@ body, body * { font-family: 'Ovelion', sans-serif !important; }
         <div class="wd-box">
           <div class="wd-row">
             <span class="wd-label">Name of the bank:</span>
-            <span class="wd-value">{{ payment_method.bank_name|default:payment_method.wallet_name|default:"—" }}</span>
+            <span class="wd-value">{% if payment_method %}{{ payment_method.bank_name|default:payment_method.wallet_name|default:"—" }}{% else %}—{% endif %}</span>
           </div>
           <div class="wd-row">
             <span class="wd-label">Bank Account Number:</span>
-            <span class="wd-value">{{ payment_method.bank_account|default:payment_method.wallet_phone|default:"—" }}</span>
+            <span class="wd-value">{% if payment_method %}{{ payment_method.bank_account|default:payment_method.wallet_phone|default:"—" }}{% else %}—{% endif %}</span>
           </div>
           <div class="wd-row">
             <span class="wd-label">Contact Name:</span>

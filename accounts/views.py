@@ -496,7 +496,7 @@ def staff_user_update(request, user_id):
         except (InvalidOperation, ValueError):
             if is_ajax:
                 return bad_json("balance_invalid")
-            messages.error(request, "Balance មិនត្រឹមត្រូវ ❌")
+            messages.error(request, "Balance invalid ❌")
             return back_redirect()
 
     if (u.notification_message or "") != old_notif:
@@ -941,7 +941,7 @@ def staff_loan_update(request, loan_id):
         try:
             loan.age = int(age_raw)
         except ValueError:
-            messages.error(request, "Age មិនត្រឹមត្រូវ ❌")
+            messages.error(request, "Age invalid ❌")
             return redirect(next_url or request.META.get("HTTP_REFERER", "staff_loans"))
 
     amount_raw = (request.POST.get("amount") or "").strip()
@@ -951,18 +951,18 @@ def staff_loan_update(request, loan_id):
         try:
             loan.amount = Decimal(amount_raw)
         except (InvalidOperation, ValueError):
-            messages.error(request, "Amount មិនត្រឹមត្រូវ ❌")
+            messages.error(request, "Amount invalid ❌")
             return redirect(next_url or request.META.get("HTTP_REFERER", "staff_loans"))
 
     if term_raw:
         try:
             loan.term_months = int(term_raw)
         except ValueError:
-            messages.error(request, "Term months មិនត្រឹមត្រូវ ❌")
+            messages.error(request, "Term months invalid ❌")
             return redirect(next_url or request.META.get("HTTP_REFERER", "staff_loans"))
 
     if loan.term_months not in (6, 12, 24, 36, 48):
-        messages.error(request, "Term months មិនត្រឹមត្រូវ (12/18/24/30) ❌")
+        messages.error(request, "Term months invalid (12/18/24/30) ❌")
         return redirect(next_url or request.META.get("HTTP_REFERER", "staff_loans"))
 
     rate = loan.interest_rate_monthly
