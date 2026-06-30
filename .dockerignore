@@ -1,0 +1,12 @@
+venv/
+.venv/
+__pycache__/
+*.pyc
+db.sqlite3
+.env
+.git/
+.claude/
+staticfiles/
+desktop.ini
+*.json
+!users.json
